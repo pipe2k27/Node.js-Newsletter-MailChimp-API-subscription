@@ -40,17 +40,24 @@ const options = {
   auth:"galpon:f6ac19293ff8e1ba53fc91334226bf2e-us19"
 };
 const request = https.request(url, options, function(response){
-  console.log(response.statusCode);
-response.on("data",function(data){
-  console.log(JSON.parse(data));
-});
+  if (response.statusCode === 200) {
+    res.sendFile(__dirname + "/succes.html");
+  } else {
+    res.sendFile(__dirname + "/failure.html");
+
+  }
+
 });
 
 request.write(jsonData);
 request.end();
 });
 
-app.listen(3000, function() {
+app.post("/failure", function(req, res) {
+  res.redirect("/");
+});
+
+app.listen(process.env.PORT || 3000, function() {
   console.log("server up");
 });
 
